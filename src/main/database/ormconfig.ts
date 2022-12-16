@@ -14,7 +14,7 @@ const config: DataSourceOptions = {
     rejectUnauthorized: false,
   },
   entities: [rootDir + "/app/shared/database/entities/*"],
-  migrations: [rootDir + "/app/shared/database/migrations/*"],
+  migrations: [rootDir + "/main/database/migrations/*"],
 };
 
 export default config;
