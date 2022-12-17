@@ -1,4 +1,5 @@
 import { Note } from "../../../models/note";
+import { redisHelper } from "../../../shared/database/redis-helper";
 import { NoteRepository } from "../repositories/note.repository";
 
 interface RequestData {
@@ -12,7 +13,7 @@ export default class CreateNote {
 
     const note = new Note(content);
     await noteRepository.saveNote(userId, note);
-
+    await redisHelper.client.del("redixNotesCacheKey");
     return note.toJson();
   }
 }

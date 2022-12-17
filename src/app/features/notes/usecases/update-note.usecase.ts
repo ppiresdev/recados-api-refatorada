@@ -1,4 +1,5 @@
 import { Note } from "../../../models/note";
+import { redisHelper } from "../../../shared/database/redis-helper";
 import { NoteRepository } from "../repositories/note.repository";
 
 interface RequestData {
@@ -16,6 +17,7 @@ export default class UpdateNote {
     if (content) note.content = content;
     if (status || status === false) note.status = status;
 
+    await redisHelper.client.del("redixNotesCacheKey");
     await noteRepository.updateNote(note);
 
     return note;
