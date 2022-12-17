@@ -7,7 +7,7 @@
     "dev": "ts-node-dev --respawn --transpile-only src/main/server.ts",
     "dev:debug": "ts-node-dev --inspect --respawn --transpile-only src/main/server.ts",
     "build": "npx tsc",
-    "start": "node dist/main/index.js",
+    "start": "node dist/main/server.js",
     "migration:show": "yarn typeorm-ts-node-commonjs migration:show -d src/main/database/typeorm.ts",
     "migration:run": "yarn typeorm-ts-node-commonjs migration:run -d src/main/database/typeorm.ts",
     "migration:create": "yarn typeorm migration:create src/main/database/migrations/CreateTableAssessments",
