@@ -1,12 +1,4 @@
-import {
-  BeforeUpdate,
-  Column,
-  Entity,
-  JoinColumn,
-  OneToMany,
-  OneToOne,
-  PrimaryColumn,
-} from "typeorm";
+import { Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
 import { NoteEntity } from "./note.entity";
 
 @Entity({ name: "users" })
@@ -21,13 +13,6 @@ export class UserEntity {
   @Column()
   password!: string;
 
-  @Column({ name: "updated_at" })
-  updatedAt!: Date;
-
-  @BeforeUpdate()
-  setUpdatedAt(): void {
-    this.updatedAt = new Date();
-  }
   @OneToMany(() => NoteEntity, (entity) => entity.userEntity)
   notesEntities?: NoteEntity[];
 }
