@@ -15,6 +15,7 @@ export class UserRepository {
   async verifyUserExistsByEmail(email: string): Promise<boolean> {
     const manager = pgHelper.client.manager;
     const userEntity = await manager.findOneBy(UserEntity, { email });
+
     return !!userEntity;
   }
 
