@@ -9,16 +9,18 @@ interface RequestData {
 }
 
 export default class UpdateNote {
-  async execute({ noteId, content, status }: RequestData): Promise<any> {
-    const noteRepository = new NoteRepository();
+  constructor(private _noteRepository: NoteRepository) {}
 
-    const note = await noteRepository.getNoteById(noteId);
+  async execute({ noteId, content, status }: RequestData): Promise<any> {
+    // const noteRepository = new NoteRepository();
+
+    const note = await this._noteRepository.getNoteById(noteId);
 
     if (content) note.content = content;
     if (status || status === false) note.status = status;
 
     await redisHelper.client.del("redixNotesCacheKey");
-    await noteRepository.updateNote(note);
+    await this._noteRepository.updateNote(note);
 
     return note;
   }

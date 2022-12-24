@@ -6,9 +6,11 @@ interface RequestData {
 }
 
 export default class DeleteNote {
+  constructor(private _noteRepository: NoteRepository) {}
+
   async execute({ noteId }: RequestData): Promise<any> {
-    const noteRepository = new NoteRepository();
+    // const noteRepository = new NoteRepository();
     await redisHelper.client.del("redixNotesCacheKey");
-    await noteRepository.removeNote(noteId);
+    await this._noteRepository.removeNote(noteId);
   }
 }

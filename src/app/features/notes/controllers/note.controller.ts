@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { NoteRepository } from "../repositories/note.repository";
 import CreateNote from "../usecases/create-note.usecase";
 import DeleteNote from "../usecases/delete-note.usecase";
 import FindNotes from "../usecases/find-notes-by-user.usecase";
@@ -16,7 +17,7 @@ export default class NoteController {
       const content = request.query.content as string | undefined;
       const status = request.query.status as string | undefined;
 
-      const usecase = new FindNotes();
+      const usecase = new FindNotes(new NoteRepository());
 
       const result = await usecase.execute({ userId, content, status });
 
@@ -31,7 +32,7 @@ export default class NoteController {
       const { userId } = request.params;
       const { content } = request.body;
 
-      const usecase = new CreateNote();
+      const usecase = new CreateNote(new NoteRepository());
 
       const result = await usecase.execute({ userId, content });
 
@@ -46,7 +47,7 @@ export default class NoteController {
       const { noteId } = request.params;
       const { content, status } = request.body;
 
-      const usecase = new UpdateNote();
+      const usecase = new UpdateNote(new NoteRepository());
 
       const result = await usecase.execute({ noteId, content, status });
 
@@ -60,7 +61,7 @@ export default class NoteController {
     try {
       const { noteId } = request.params;
 
-      const usecase = new DeleteNote();
+      const usecase = new DeleteNote(new NoteRepository());
       await usecase.execute({ noteId });
 
       return response.status(200).json("Exclusão concluída");

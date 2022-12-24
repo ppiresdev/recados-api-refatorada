@@ -9,8 +9,10 @@ interface RequestData {
 }
 
 export default class FindNotes {
+  constructor(private _noteRepository: NoteRepository) {}
+
   async execute({ userId, content, status }: RequestData): Promise<Note[]> {
-    const noteRepository = new NoteRepository();
+    // const noteRepository = new NoteRepository();
     let notes: Note[] = [];
     let redixNotesCacheKey = await redisHelper.client.get("redixNotesCacheKey");
     let redixNotesKey = userId + content + status;
@@ -21,7 +23,11 @@ export default class FindNotes {
         redixNotesCacheKey = redixNotesKey;
         await redisHelper.client.del("redixNotesCacheKey");
         await redisHelper.client.set("redixNotesCacheKey", redixNotesCacheKey);
-        notes = await noteRepository.getNotesByUser(userId, content, status);
+        notes = await this._noteRepository.getNotesByUser(
+          userId,
+          content,
+          status
+        );
         await redisHelper.client.set(redixNotesCacheKey, JSON.stringify(notes));
       } else {
         const notesChace = await redisHelper.client.get(redixNotesCacheKey);
@@ -32,7 +38,11 @@ export default class FindNotes {
         );
       }
     } else {
-      notes = await noteRepository.getNotesByUser(userId, content, status);
+      notes = await this._noteRepository.getNotesByUser(
+        userId,
+        content,
+        status
+      );
       redixNotesCacheKey = redixNotesKey;
       await redisHelper.client.set("redixNotesCacheKey", redixNotesCacheKey);
       await redisHelper.client.set(redixNotesCacheKey, JSON.stringify(notes));

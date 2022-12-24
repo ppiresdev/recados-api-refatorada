@@ -8,11 +8,13 @@ interface RequestData {
 }
 
 export default class CreateNote {
+  constructor(private _noteRepository: NoteRepository) {}
+
   async execute({ userId, content }: RequestData): Promise<any> {
-    const noteRepository = new NoteRepository();
+    // const noteRepository = new NoteRepository();
 
     const note = new Note(content);
-    await noteRepository.saveNote(userId, note);
+    await this._noteRepository.saveNote(userId, note);
     await redisHelper.client.del("redixNotesCacheKey");
     return note.toJson();
   }
