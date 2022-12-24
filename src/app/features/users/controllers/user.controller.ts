@@ -1,11 +1,12 @@
 import { Request, Response } from "express";
+import { UserRepository } from "../repositories/user.repository";
 import CreateUser from "../usecases/create-user.usecase";
 import LoginUser from "../usecases/login-user.usecase";
 
 export default class UserController {
   async createUser(request: Request, response: Response) {
     try {
-      const usecase = new CreateUser();
+      const usecase = new CreateUser(new UserRepository());
 
       const result = await usecase.execute(request.body);
 
@@ -17,7 +18,7 @@ export default class UserController {
 
   async loginUser(request: Request, response: Response) {
     try {
-      const usecase = new LoginUser();
+      const usecase = new LoginUser(new UserRepository());
       const result = await usecase.execute(request.body);
 
       return response.status(200).json(result);

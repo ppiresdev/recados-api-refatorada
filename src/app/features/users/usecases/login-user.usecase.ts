@@ -7,11 +7,13 @@ interface RequestData {
 }
 
 export default class LoginUser {
+  constructor(private _userRepository: UserRepository) {}
+
   async execute({ email, password }: RequestData): Promise<any> {
     // verificar se o usuário já existe
-    const userRepository = new UserRepository();
+    // const userRepository = new UserRepository();
 
-    const userFound = await userRepository.findUserByEmailAndPassword(
+    const userFound = await this._userRepository.findUserByEmailAndPassword(
       email,
       password
     );

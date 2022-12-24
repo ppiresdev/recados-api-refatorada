@@ -7,11 +7,18 @@ interface RequestData {
 }
 
 export default class CreateUser {
+  // private _userRepository: UserRepository;
+  constructor(private _userRepository: UserRepository) {
+    // this._userRepository = userRepository;
+  }
+
   async execute({ email, password }: RequestData): Promise<any> {
     // verificar se o usuário já existe
-    const userRepository = new UserRepository();
+    //const userRepository = new UserRepository();
 
-    const userExists = await userRepository.verifyUserExistsByEmail(email);
+    const userExists = await this._userRepository.verifyUserExistsByEmail(
+      email
+    );
 
     if (userExists) {
       throw new Error("Já existe um usuário com este e-email");
@@ -23,7 +30,7 @@ export default class CreateUser {
     // salvar no banco de dados
     const user = new User(email, password);
 
-    await userRepository.createUser(user);
+    await this._userRepository.createUser(user);
 
     return user.toJson();
   }
