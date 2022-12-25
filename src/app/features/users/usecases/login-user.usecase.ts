@@ -18,6 +18,8 @@ export default class LoginUser {
       password
     );
 
+    console.log("==User Entity==", userFound);
+
     if (!userFound) {
       throw new Error("Usuário Inexistente");
     }
