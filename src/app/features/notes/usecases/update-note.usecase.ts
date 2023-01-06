@@ -12,14 +12,14 @@ export default class UpdateNote {
   constructor(private _noteRepository: NoteRepository) {}
 
   async execute({ noteId, content, status }: RequestData): Promise<any> {
-    // const noteRepository = new NoteRepository();
-
     const note = await this._noteRepository.getNoteById(noteId);
+
+    console.log("==Note===", note);
 
     if (content) note.content = content;
     if (status || status === false) note.status = status;
 
-    await redisHelper.client.del("redixNotesCacheKey");
+    // await redisHelper.client.del("redixNotesCacheKey");
     await this._noteRepository.updateNote(note);
 
     return note;

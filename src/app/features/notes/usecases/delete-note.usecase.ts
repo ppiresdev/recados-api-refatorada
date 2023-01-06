@@ -10,7 +10,7 @@ export default class DeleteNote {
 
   async execute({ noteId }: RequestData): Promise<any> {
     // const noteRepository = new NoteRepository();
-    await redisHelper.client.del("redixNotesCacheKey");
+    // await redisHelper.client.del("redixNotesCacheKey");
     await this._noteRepository.removeNote(noteId);
   }
 }

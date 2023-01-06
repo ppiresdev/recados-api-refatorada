@@ -15,7 +15,7 @@ export default class CreateNote {
 
     const note = new Note(content);
     await this._noteRepository.saveNote(userId, note);
-    await redisHelper.client.del("redixNotesCacheKey");
+    // await redisHelper.client.del("redixNotesCacheKey");
     return note.toJson();
   }
 }

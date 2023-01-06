@@ -12,41 +12,42 @@ export default class FindNotes {
   constructor(private _noteRepository: NoteRepository) {}
 
   async execute({ userId, content, status }: RequestData): Promise<Note[]> {
-    // const noteRepository = new NoteRepository();
     let notes: Note[] = [];
-    let redixNotesCacheKey = await redisHelper.client.get("redixNotesCacheKey");
-    let redixNotesKey = userId + content + status;
+    // let redixNotesCacheKey = await redisHelper.client.get("redixNotesCacheKey");
+    // let redixNotesKey = userId + content + status;
 
-    if (redixNotesCacheKey) {
-      if (redixNotesCacheKey !== redixNotesKey) {
-        await redisHelper.client.del(redixNotesCacheKey);
-        redixNotesCacheKey = redixNotesKey;
-        await redisHelper.client.del("redixNotesCacheKey");
-        await redisHelper.client.set("redixNotesCacheKey", redixNotesCacheKey);
-        notes = await this._noteRepository.getNotesByUser(
-          userId,
-          content,
-          status
-        );
-        await redisHelper.client.set(redixNotesCacheKey, JSON.stringify(notes));
-      } else {
-        const notesChace = await redisHelper.client.get(redixNotesCacheKey);
+    // if (redixNotesCacheKey) {
+    //   if (redixNotesCacheKey !== redixNotesKey) {
+    //     await redisHelper.client.del(redixNotesCacheKey);
+    //     redixNotesCacheKey = redixNotesKey;
+    //     await redisHelper.client.del("redixNotesCacheKey");
+    //     await redisHelper.client.set("redixNotesCacheKey", redixNotesCacheKey);
+    //     notes = await this._noteRepository.getNotesByUser(
+    //       userId,
+    //       content,
+    //       status
+    //     );
+    //     await redisHelper.client.set(redixNotesCacheKey, JSON.stringify(notes));
+    //   } else {
+    //     const notesChace = await redisHelper.client.get(redixNotesCacheKey);
 
-        const teste = JSON.parse(notesChace!);
-        notes = teste.map((t: any) =>
-          Note.create(t._id, t._content, t._status)
-        );
-      }
-    } else {
-      notes = await this._noteRepository.getNotesByUser(
-        userId,
-        content,
-        status
-      );
-      redixNotesCacheKey = redixNotesKey;
-      await redisHelper.client.set("redixNotesCacheKey", redixNotesCacheKey);
-      await redisHelper.client.set(redixNotesCacheKey, JSON.stringify(notes));
-    }
+    //     const teste = JSON.parse(notesChace!);
+    //     notes = teste.map((t: any) =>
+    //       Note.create(t._id, t._content, t._status)
+    //     );
+    //   }
+    // } else {
+    //   notes = await this._noteRepository.getNotesByUser(
+    //     userId,
+    //     content,
+    //     status
+    //   );
+    //   redixNotesCacheKey = redixNotesKey;
+    //   await redisHelper.client.set("redixNotesCacheKey", redixNotesCacheKey);
+    //   await redisHelper.client.set(redixNotesCacheKey, JSON.stringify(notes));
+    // }
+    notes = await this._noteRepository.getNotesByUser(userId, content, status);
+    console.log("+++Notes+++", notes);
 
     return notes;
   }
