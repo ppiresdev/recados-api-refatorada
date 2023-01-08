@@ -19,13 +19,15 @@ export class CreateTableNotes1670547447906 implements MigrationInterface {
             name: "updated_at",
             type: "timestamp",
             isNullable: false,
-            default: "now()",
+            // default: "now()",
+            default: "DATE('now')",
           },
           {
             name: "created_at",
             type: "timestamp",
             isNullable: false,
-            default: "now()",
+            // default: "now()",
+            default: "DATE('now')",
           },
         ],
         foreignKeys: [
