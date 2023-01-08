@@ -47,7 +47,6 @@ export default class FindNotes {
     //   await redisHelper.client.set(redixNotesCacheKey, JSON.stringify(notes));
     // }
     notes = await this._noteRepository.getNotesByUser(userId, content, status);
-    console.log("+++Notes+++", notes);
 
     return notes;
   }
